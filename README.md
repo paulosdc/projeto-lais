@@ -1,4 +1,6 @@
-Pacotes instalados e suas respectivas versões
+# Informações relevantes
+
+## Pacotes instalados e suas respectivas versões
 
 asgiref                3.5.2<br />
 cffi                   1.15.1<br />
@@ -19,3 +21,17 @@ reportlab              3.6.12<br />
 setuptools             63.2.0<br />
 sqlparse               0.4.3<br />
 tzdata                 2022.5
+
+## Banco de dados
+
+Está sendo usado MySQL e as informações de conexão estão no arquivo settings.py, dentro da pasta DjangoAPI (DATABASES). O nome do banco criado foi "projetodb".
+
+## Comandos 
+
+python manage.py makemigrations<br />
+python manage.py migrate<br />
+python manage.py createsuperuser<br />
+python manage.py runserver
+
+
+

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4>{{ nome }}</h4>
+        {% if not request.user.is_superuser %}
+            <h7> Data de nascimento: {{ datanasc }} ({{ idade }} anos) - CPF: {{ cpf }}</h7>
+        {% endif %}
+        <h4>Planos de curso</h4>
+        <hr>
+        <a class="btn btn-outline-primary" href="{% url 'realizarcadastrocurso' %}">Submeter novo plano</a>  
+        <a class="btn btn-dark" href="{% url 'validacaocertificado' %}">Validar certificado</a>
+        <a class="btn btn-primary active" href="{% url 'cadastroareatematica' %}">Criar eixo temático</a>
+        {% if not request.user.is_superuser %}
+            <a class="btn btn-secondary" href="{% url 'cadastroprofessor' %}">Alterar meus dados pessoais</a>
+        {% endif %}
+        <a class="btn btn-danger" href="{% url 'logout' %}">Sair</a>
+        <br><br>
+        <table class="table table-stripped">
+            <thead>
+                <th class='text-center'>Nome</th>
+                <th class='text-center'>Carga horária</th>
+                <th class='text-center'>Área Temática</th>
+                <th class='text-center'>Professor Responsável</th>
+                <th class='text-center'>Status</th>
+                <th class='text-center'>Ações</th>
+            </thead>
+            <tbody>
+                {% for curso in cursos %}
+                    <tr>
+                        {% if curso.Aprovado == NULL or curso.Aprovado == False%}
+                            <td class='text-center'>{{ curso.Nome }}</td>
+                        {% endif %}
+                        {% if curso.Aprovado == True %}
+                            <td class='text-center'><a href="{% url 'topicosaula' curso.CursoID %}">{{ curso.Nome }}</a></td>
+                        {% endif %}
+
+                        <td class='text-center'>{{ curso.CargaHoraria }} hora(s)</td>
+                        <td class='text-center'>{{ curso.AreaTematica.Nome }}</td>
+                        <td class='text-center'>{{ curso.ProfessorResponsavel.Nome }}</td>
+
+                        <td class='text-center'>
+                            {% if curso.Aprovado == NULL %}
+                                <span class="badge badge-pill badge-warning">Pendente de aprovação</span>
+                            {% endif %}
+                            {% if curso.Aprovado == True %}
+                                <span class="badge badge-pill badge-success">Aprovado</span>
+                            {% endif %}
+                            {% if curso.Aprovado == False %}
+                                <span class="badge badge-pill badge-danger">Reprovado</span>
+                            {% endif %}
+                        </td>
+
+                        <td class='text-center'>
+                            <a class="btn btn-warning" href="{% url 'edicaocurso' curso.CursoID %}">Editar</a>
+                            <a class="btn btn-danger" href="{% url 'deletarcurso' curso.CursoID %}" onclick="return confirm('Tem certeza que deseja exluir o curso {{ curso.Nome }}?')">Excluir</a>
+                            {% if curso.Aprovado != NULL and curso.Aprovado == True %}
+                                <a type="button" class="btn btn-primary" href="{% url 'emitircertificado' curso.CursoID %}">
+                            {% endif %}
+                            {% if curso.Aprovado != NULL and curso.Aprovado == False %}
+                                <a type="button" class="btn btn-secondary">
+                            {% endif %}
+                            {% if curso.Aprovado == NULL %}
+                                <a type="button" class="btn btn-secondary">
+                            {% endif %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                </svg>
+                            </a>
+                            {% if curso.Aprovado != NULL and request.user.is_superuser%}
+                                <a class="btn btn-secondary">Aprovação</a>
+                            {% endif %}
+                            {% if curso.Aprovado == NULL and request.user.is_superuser%}
+                                <a class="btn btn-info" href="{% url 'aprovarcurso' curso.CursoID %}">Aprovação</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

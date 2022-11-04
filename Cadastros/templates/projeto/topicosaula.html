@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4>Tópicos de aula</h4>
+        <hr>
+        {% if quantidade < 5  %}
+            <a class="btn btn-success" href="{% url 'cadastrotopicosaula' id %}">Submeter novo tópico de aula</a><br><br>
+        {% else %}
+            <p class="lead">
+                O máximo de tópicos de aula permitido é 5 por curso.
+            </p>
+        {% endif %}
+        <table class="table table-stripped">
+            <thead>
+                <th class='text-center'>Título</th>
+                <th class='text-center'>Descrição</th>
+            </thead>
+            <tbody>
+                {% for topico in topicos %}
+                    <tr>
+                        <td class='text-center'>{{ topico.Titulo }}</td>
+                        <td class='text-center'>{{ topico.Descricao }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

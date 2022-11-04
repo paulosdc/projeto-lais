@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="class">
+    <div class="card-body">
+        <h4>Cadastro de curso</h4>
+        <hr>
+            <form action="{% url 'realizarcadastrocurso' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type="submit">Salvar</button>
+                <a class="btn btn-danger" href="{% url 'cursos' %}">Cancelar</a>
+            </form>
+        </hr>
+    </div>
+</div>
+{% endblock %}

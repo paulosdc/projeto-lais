@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="class">
+    <div class="card-body">       
+        <h4>Validação de certificado</h4>
+        <hr>
+            <form action="{% url 'validarcertificado' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type="submit">Verificar</button>
+                {% if request.user.is_authenticated %}
+                    <a class="btn btn-danger" href="{% url 'cursos' %}">Volar para listagem de cursos</a>
+                {% else %}
+                    <a class="btn btn-danger" href="{% url 'home' %}">Voltar</a>
+                {% endif %}  
+                {% if valido and inicio == False %}
+                    <p>O certificado é válido</p>
+                {% elif valido == False and inicio == False %}
+                    <p>O certificado não é válido</p>
+                {% endif %} 
+            </form>
+        </hr>
+    </div>
+</div>
+{% endblock %}
